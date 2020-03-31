@@ -14,3 +14,7 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+public/.htaccess
+public/.user.ini
+public/php.ini
+error_log
