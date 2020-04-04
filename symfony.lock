@@ -428,7 +428,7 @@
         "version": "v4.4.5"
     },
     "symfony/templating": {
-        "version": "v4.4.5"
+        "version": "v4.4.7"
     },
     "symfony/test-pack": {
         "version": "v1.0.6"

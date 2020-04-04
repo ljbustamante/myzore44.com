@@ -48,13 +48,13 @@ class Product
     private $longDescription;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProductColor", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="ProductGroupAttributeValue", mappedBy="product")
      **/
-    private $productColors;
+    private $productGroupAttributesValue;
 
     public function __construct()
     {
         // parent::__construct();
-        $this->productColors = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->productGroupAttributesValue = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }

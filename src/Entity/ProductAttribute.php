@@ -1,0 +1,40 @@
+<?php
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Table(name="product_attribute") 
+ * @ORM\Entity(repositoryClass="App\Repository\ProductAttributeRepository")
+ */
+class ProductAttribute
+{
+    use \App\Traits\Trackeable;
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $productAttribute;
+
+    /**
+     * @ORM\OneToMany(targetEntity="productAttributeValue", mappedBy="productAttribute")
+     **/
+    private $productAttributeValues;
+
+    public function __construct()
+    {
+        // parent::__construct();
+        $this->productAttributeValues = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+}
