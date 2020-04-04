@@ -28,7 +28,7 @@ class ProductType
     private $productType;
 
     /**
-     * @ORM\ManyToMany(targetEntity="ProductAttribute" cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="ProductAttribute", cascade={"persist"})
      * @ORM\JoinTable(name="producttype_attributes",
      *      joinColumns={@ORM\JoinColumn(name="product_type_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="product_attribute_id", referencedColumnName="id", onDelete="CASCADE")}

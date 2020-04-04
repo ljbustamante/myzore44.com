@@ -30,7 +30,7 @@ class ProductGroupAttributeValue
     private $product;
 
     /**
-     * @ORM\ManyToMany(targetEntity="ProductAttributeValue" cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="ProductAttributeValue", cascade={"persist"})
      * @ORM\JoinTable(name="product_productattributevalue",
      *      joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="product_attribute_value_id", referencedColumnName="id", onDelete="CASCADE")}

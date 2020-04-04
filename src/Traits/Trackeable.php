@@ -8,7 +8,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 trait Trackeable
 {
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(name="register_user_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $registerUser;
@@ -19,7 +19,7 @@ trait Trackeable
     private $registerDatetime;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(name="last_update_user_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $lastUpdateUser;

@@ -52,6 +52,11 @@ class Product
      **/
     private $productGroupAttributesValue;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ProductColor", mappedBy="product")
+     **/
+    private $productColors;
+
     public function __construct()
     {
         // parent::__construct();

@@ -25,3 +25,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # fos_user.registration.form.factory:
+    #     class: FOS\UserBundle\Form\Factory\FormFactory
+    #     public: true
+    #     autowire: true
+    #     arguments: 
+    #         - '@form.factory'
+    #         - '%fos_user.registration.form.name%'
+    #         - '%fos_user.registration.form.type%'
+    #         - '%fos_user.registration.form.validation_groups%'

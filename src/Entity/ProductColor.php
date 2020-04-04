@@ -33,7 +33,7 @@ class ProductColor
     private $color;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Size" cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Size", cascade={"persist"})
      * @ORM\JoinTable(name="productcolor_sizes",
      *      joinColumns={@ORM\JoinColumn(name="productcolor_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="size_id", referencedColumnName="id", onDelete="CASCADE")}

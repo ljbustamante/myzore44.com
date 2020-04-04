@@ -18,7 +18,7 @@ trait Publishable
     private $publishedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(name="publishedBy", referencedColumnName="id", onDelete="SET NULL")
      */
     private $publishedBy;
