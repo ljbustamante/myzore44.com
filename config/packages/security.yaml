@@ -17,11 +17,15 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        
         main:
             pattern: ^/
             form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
+                # csrf_token_generator: security.csrf.token_manager
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+                failure_path: fos_user_security_login
+                default_target_path: fos_user_profile_account
 
             logout:       true
             anonymous:    true
