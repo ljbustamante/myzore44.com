@@ -1,5 +1,10 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
-# fos_user:
-#     resource: "@App/Resources/config/rputes/fos_user.yaml"
+fos_user:
+    resource: "./routes/fos_user.yaml"
+    prefix: '/usuario'
+
+fos_admin:
+    resource: "./routes/fos_admin.yaml"
+    prefix: '/admin'

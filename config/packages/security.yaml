@@ -17,8 +17,20 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        
-        main:
+
+        admin:
+            pattern: ^/admin
+            form_login:
+                # csrf_token_generator: security.csrf.token_manager
+                login_path: fos_admin_security_login
+                check_path: fos_admin_security_check
+                failure_path: fos_admin_security_login
+                default_target_path: fos_admin_profile_account
+
+            logout:       true
+            anonymous:    true
+
+        public:
             pattern: ^/
             form_login:
                 # csrf_token_generator: security.csrf.token_manager
@@ -29,9 +41,14 @@ security:
 
             logout:       true
             anonymous:    true
+        
+        
 
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/$, role: ROLE_ADMIN }
