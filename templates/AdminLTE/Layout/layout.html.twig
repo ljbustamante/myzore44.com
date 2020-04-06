@@ -1,0 +1,25 @@
+{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+{% block page_title %}My Zore{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+{% endblock %}
+{% block logo_mini %}M<b>Z</b>{% endblock %}
+{% block logo_large %}My <b>Zore</b>{% endblock %}
+{% block navbar_messages %}{% endblock %}
+{% block navbar_notifications %}{% endblock %}
+{% block navbar_tasks %}
+{% endblock %}
+{% block navbar_user %}
+    {{ render(controller('KevinPapst\\AdminLTEBundle\\Controller\\NavbarController::userAction')) }}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script>
+if (typeof jQuery != 'undefined') {  
+    // jQuery is loaded => print the version
+    console.log(jQuery.fn.jquery);
+}
+</script>
+{% endblock %}

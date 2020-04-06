@@ -1,0 +1,142 @@
+{% extends 'AdminLTE/Layout/layout.html.twig' %}
+{% import 'AdminLTE/macros.html.twig' as macros %}
+
+{% block page_title %}Bienvenido{% endblock %}
+{% block page_subtitle %}Panel de control{% endblock %}
+{% block page_content %}
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box box-info">
+            <div class="box-header">
+              <h3 class="box-title">{% block table_title %}{% endblock %}</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              {% block alerts %}
+              {{ macros.flash_message() }}
+              {% endblock %}
+
+              {% if table_conf['new_button'] is defined %}
+              <p class="text-right">
+                <a class="btn btn-success mr5" href="{% if table_conf['parent'] is defined %}{{ path(table_conf['new_button']['route'], {(table_conf['parent']['name_id']): table_conf['parent']['id']}) }}{% else %}{{ path(table_conf['new_button']['route']) }}{% endif %}">
+                  <i class="fa fa-plus mr5"></i> {{ table_conf['new_button']['label']|default('Agregar nuevo') }}
+                </a>
+              </p>
+              {% endif %}
+              {% block table_content %}
+              <table class="table table-bordered table-striped">
+                <thead>
+                {% block table_headers %}
+                  <tr>
+                  {% if table_conf['cardinal'] == true %}
+                    <th class="text-center">#</th>
+                  {% endif %}
+                  <th class="text-center">ID</th>
+                  {% for column in table_conf['columns'] %}
+                    <th{% if column['header_alignment'] is defined %} class="text-{{ column['header_alignment'] }}"{% endif %}>{{ column['header_label'] }}</th>
+                  {% endfor %}
+                  {% if table_conf['actions']|length > 0 %}
+                    <th class="text-center">Acciones</th>
+                  {% endif %}
+                  </tr>
+            	  {% endblock %}
+                </thead>
+                <tbody>
+                {% for card, element in elements %}
+                <tr>
+                  {% if table_conf['cardinal'] == true %}
+	                <td class="text-center">{{ card + 1 }}</td>
+                  {% endif %}
+                  <td class="text-center">{{ element.id }}</td>
+                  {% for column in table_conf['columns'] %}
+                  {% if column['field'] is iterable %}
+                    {% set currentValue = null %}
+                    {% for field in column['field'] %}
+                      {% if currentValue is null %}
+                      {% set currentValue = attribute(element, field) %}
+                      {% else %}
+                        {% set currentValue = attribute(currentValue, field) %}
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    {% set currentValue = attribute(element, column['field']) %}
+                  {% endif %}
+
+                  <td{% if column['data_alignment'] is defined %} class="text-{{ column['header_alignment'] }}"{% endif %}>
+                  {% if currentValue is null%}
+                    <span class="badge label-warning">No disponible</span>
+                  {% elseif isDateTime(currentValue) %}
+                    {{ currentValue|date('d/m/Y H:i') }}                    
+                  {% elseif isBoolean(currentValue) %}
+                     {% if currentValue == true %}
+                     <span class="badge label-success">Si</span>
+                     {% else %}
+                     <span class="badge label-danger">No</span>
+                     {% endif %}
+                  {% elseif isFloat(currentValue) %}
+                     {{ currentValue|number_format(2) }}  
+                  {% else %}
+                    {{ currentValue }}
+                  {% endif %}
+                  </td>
+                  {% endfor %}
+
+                  {% if table_conf['actions']|length > 0 %}
+              	    <td class="text-center">
+              	    {% for key, action in table_conf['actions'] %}
+              	      <a title="{{ action['label'] }}" href="{% if table_conf['parent'] is defined %}{{ path(action['route'], {(table_conf['parent']['name_id']): table_conf['parent']['id'], (action['name_id']): element.id}) }}{% else %}{{ path(action['route'], { (action['name_id']): element.id }) }}{% endif %}" data-action="{{ key }}"{% if action['target'] is defined %} target="{{ action['target'] }}"{% endif %}>
+              	    	<button class="btn btn-sm {{ action['button_class'] }}"  ><i class="{{ action['icon_class'] }}"></i></button>
+              	      </a>
+              	    {% endfor %}
+              	    </td>
+                  {% endif %}
+                </tr>
+            	{% endfor %}
+                </tbody>
+                <tfoot>
+                {{ block('table_headers') }}
+                </tfoot>
+              </table>
+              {% endblock %}
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+	</div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+{% endblock %}
+{% block javascripts_inline %}
+<script type="text/javascript">
+$(document).ready( function () {
+    $('.table').DataTable();
+
+    $('[data-action=delete]').click(function() {
+    	event.preventDefault();
+    	console.log("Eliminar");
+        var trigger = this;
+        /*
+        bootbox.confirm({
+            message: "Realmente desea eliminar el elemento ?:",
+            title: "Está usted seguro ?",
+            callback: function(result) {
+                if(result == true){
+                    location.href = $(trigger).attr('href');
+                }
+            }
+        });
+        */
+        if(window.confirm("Realmente desea eliminar el elemento ?")){
+        	location.href = $(trigger).attr('href');
+        }
+    });
+} );
+</script>
+{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+<link href="http://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+{% endblock %}

@@ -1,0 +1,15 @@
+{% macro flash_message() %}
+{% set flashbag = app.session.flashbag.all %}
+{% if flashbag is not empty %}
+    {% for type, messages in flashbag %}
+        {% for message in messages %}
+        {% set content = json_decode(message) %}
+        <div class="alert alert-{{ type }} alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-info"></i>{{ content.title }}</h4>
+            {{ content.message|raw }}
+        </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
+{% endmacro %}

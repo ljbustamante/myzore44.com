@@ -4,7 +4,9 @@
 fos_user:
     resource: "./routes/fos_user.yaml"
     prefix: '/usuario'
+    name_prefix: 'user_'
 
 fos_admin:
-    resource: "./routes/fos_admin.yaml"
+    resource: "./routes/fos_user.yaml"
     prefix: '/admin'
+    name_prefix: 'admin_'

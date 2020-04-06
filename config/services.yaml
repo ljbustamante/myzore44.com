@@ -26,6 +26,16 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    twig.extension.string:
+        resource: ../src/Twig/StringExtension.php
+        namespace: App\Twig\
+        public: true
+    
+    twig.extension.checkType:
+        resource: ../src/Twig/CheckTypeExtension.php
+        namespace: App\Twig\
+        public: true
+
     # fos_user.registration.form.factory:
     #     class: FOS\UserBundle\Form\Factory\FormFactory
     #     public: true

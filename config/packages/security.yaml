@@ -3,8 +3,8 @@ security:
         FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
-        ROLE_DIRECTOR:    ROLE_USER
-        ROLE_ADMIN:       ROLE_DIRECTOR
+        ROLE_PROMOTER:    ROLE_USER
+        ROLE_ADMIN:       ROLE_PROMOTER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
@@ -22,10 +22,10 @@ security:
             pattern: ^/admin
             form_login:
                 # csrf_token_generator: security.csrf.token_manager
-                login_path: fos_admin_security_login
-                check_path: fos_admin_security_check
-                failure_path: fos_admin_security_login
-                default_target_path: fos_admin_profile_account
+                login_path: admin_fos_user_security_login
+                check_path: admin_fos_user_security_check
+                failure_path: admin_fos_user_security_login
+                default_target_path: admin_home_index
 
             logout:       true
             anonymous:    true
@@ -34,10 +34,10 @@ security:
             pattern: ^/
             form_login:
                 # csrf_token_generator: security.csrf.token_manager
-                login_path: fos_user_security_login
-                check_path: fos_user_security_check
-                failure_path: fos_user_security_login
-                default_target_path: fos_user_profile_account
+                login_path: user_fos_user_security_login
+                check_path: user_fos_user_security_check
+                failure_path: user_fos_user_security_login
+                default_target_path: user_fos_user_profile_account
 
             logout:       true
             anonymous:    true
