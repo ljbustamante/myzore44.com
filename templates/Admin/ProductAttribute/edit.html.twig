@@ -1,6 +1,5 @@
 {% extends 'AdminLTE/form_detail.html.twig' %}
-
-{#% form_theme form.productAttributeValues 'Form\\collection_widget.html.twig' %#}
+{% form_theme form.productAttributeValues 'Form\\collection_widget.html.twig' %}
 
 {% block page_title %}Edición de Atributo de Producto{% endblock %}
 {% block page_subtitle %}{{ form.vars.data.genre|default('Nuevo') }}{% endblock %}
@@ -10,20 +9,7 @@
 {{ form_errors(form) }}
 {{ form_start(form) }}
 	{{ form_row(form.productAttribute) }}
-	<div class="form-group">
-		{#{ dump(form.productAttributeValues) }#}
-		{{ form_label(form.productAttributeValues) }}
-		<ol id="{{ form.productAttributeValues.vars.id }}-fields-list" data-prototype="{{ form_widget(form.productAttributeValues.vars.prototype)|e('html_attr') }}" data-widget-tags="{{ '<li></li>'|e }}">
-		{% for component in form.productAttributeValues %}
-			<li>
-				{{ form_errors(component) }}
-				{{ form_widget(component) }}
-			</li>
-		{% endfor %}
-		</ol>
-		<button type="button" class="add-another-collection-widget" data-list="#{{ form.productAttributeValues.vars.id }}-fields-list">Agregar elemento</button>
-
-	</div>
+	{{ form_row(form.productAttributeValues) }}
 	{{ form_row(form.active) }}
 	{{ form_row(form.actions) }}
 {{ form_end(form) }}
