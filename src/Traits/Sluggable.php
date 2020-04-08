@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait Sluggable
 {
     /**
-     * @ORM\Column(length=200)
+     * @ORM\Column(length=200, nullable=TRUE)
      */
     private $slug;
 

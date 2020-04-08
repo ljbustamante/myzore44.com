@@ -5,27 +5,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Genre as EntityCrud;
-use App\Form\Type\Admin\GenreType as EntityFormType;
+use App\Entity\ProductAttribute as EntityCrud;
+use App\Form\Type\Admin\ProductAttributeType as EntityFormType;
 
-class GenreController extends AbstractController
+class ProductAttributeController extends AbstractController
 {
-    protected $entityName = 'Genre';
-    protected $entityLabel = 'Género';
-    protected $routeList = 'admin_genre_list';
-    protected $routeAdd = 'admin_genre_add';
-    protected $routeEdit = 'admin_genre_edit';
-    protected $routeDelete = 'admin_genre_delete';
-    protected $parameterId = 'idGenre';
+    protected $entityName = 'ProductAttribute';
+    protected $entityLabel = 'Atributo de Producto';
+    protected $routeList = 'admin_productattribute_list';
+    protected $routeAdd = 'admin_productattribute_add';
+    protected $routeEdit = 'admin_productattribute_edit';
+    protected $routeDelete = 'admin_productattribute_delete';
+    protected $parameterId = 'idProductAttribute';
 
     /**
-     * @Route("genero/", name="admin_genre_list")
+     * @Route("productoatributo/", name="admin_productattribute_list")
      */
     public function list(Request $request){
         $entities =  $this->getDoctrine()->getRepository(EntityCrud::class)->findAll();
 
         $table_conf = ['columns' => [
-                        ['header_label' => 'Género', 'header_alignment' => 'left', 'field' => 'genre', 'data_alignment' => 'left'], 
+                        ['header_label' => 'Atrinuto de Producto', 'header_alignment' => 'left', 'field' => 'productAttribute', 'data_alignment' => 'left'], 
                         ['header_label' => 'Activo', 'header_alignment' => 'center', 'field' => 'active', 'data_alignment' => 'center']
                        ], 
                        'cardinal' => true,
@@ -50,17 +50,17 @@ class GenreController extends AbstractController
     }
 
     /**
-     * @Route("genero/agregar", 
-     *         name="admin_genre_add"
+     * @Route("productoatributo/agregar", 
+     *         name="admin_productattribute_add"
      * )
-     * @Route("genero/editar/{idGenre}", 
-     *         defaults={"idGenre"=null}, 
-     *         requirements={"idGenre"="\d+"}, 
-     *         name="admin_genre_edit"
+     * @Route("productoatributo/editar/{idProductAttribute}", 
+     *         defaults={"idProductAttribute"=null}, 
+     *         requirements={"idProductAttribute"="\d+"}, 
+     *         name="admin_productattribute_edit"
      * )
      */
-    public function edit(Request $request, $idGenre = null){
-        $entity = $this->entityFromId($idGenre);
+    public function edit(Request $request, $idProductAttribute = null){
+        $entity = $this->entityFromId($idProductAttribute);
         $entityForm = $this->createForm(EntityFormType::class, $entity);
 
         $entityForm->handleRequest($request);
@@ -91,13 +91,13 @@ class GenreController extends AbstractController
     }
 
     /**
-     * @Route("genero/eliminar/{idGenre}", 
-     *         requirements={"idGenre"="\d+"}, 
-     *         name="admin_genre_delete"
+     * @Route("productoatributo/eliminar/{idProductAttribute}", 
+     *         requirements={"idProductAttribute"="\d+"}, 
+     *         name="admin_productattribute_delete"
      * )
      */
-    public function delete(Request $request, $idGenre){
-        $entity = $this->entityFromId($idGenre);
+    public function delete(Request $request, $idProductAttribute){
+        $entity = $this->entityFromId($idProductAttribute);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);

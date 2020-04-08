@@ -1,0 +1,20 @@
+{% extends 'AdminLTE/form_detail.html.twig' %}
+
+{% block page_title %}Edición de Campaña{% endblock %}
+{% block page_subtitle %}{{ form.vars.data.genre|default('Nuevo') }}{% endblock %}
+{% block form_content %}
+{#{ dump(form.vars.data.image) }}
+{% thumbnail form.vars.data.image, 'small' %#}
+{{ form_errors(form) }}
+{{ form_start(form) }}
+	{{ form_row(form.name) }}
+    {{ form_row(form.startDate) }}
+    {{ form_row(form.endDate) }}
+	{{ form_row(form.active) }}
+	{{ form_row(form.actions) }}
+{{ form_end(form) }}
+{#{ form(form) }#}
+{% endblock %}
+
+
+

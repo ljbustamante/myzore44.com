@@ -108,8 +108,6 @@
 {% block javascripts %}
 {{ parent() }}
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-{% endblock %}
-{% block javascripts_inline %}
 <script type="text/javascript">
 $(document).ready( function () {
     $('.table').DataTable();
@@ -118,17 +116,7 @@ $(document).ready( function () {
     	event.preventDefault();
     	console.log("Eliminar");
         var trigger = this;
-        /*
-        bootbox.confirm({
-            message: "Realmente desea eliminar el elemento ?:",
-            title: "Está usted seguro ?",
-            callback: function(result) {
-                if(result == true){
-                    location.href = $(trigger).attr('href');
-                }
-            }
-        });
-        */
+        
         if(window.confirm("Realmente desea eliminar el elemento ?")){
         	location.href = $(trigger).attr('href');
         }

@@ -76,9 +76,9 @@ trait Trackeable
     /**
      * Set registerUser
      *
-     * @param \AppBundle\Entity\User $registerUser
+     * @param \App\Entity\User $registerUser
      */
-    public function setRegisterUser(\AppBundle\Entity\User $registerUser = null)
+    public function setRegisterUser(\App\Entity\User $registerUser = null)
     {
         $this->registerUser = $registerUser;
 
@@ -88,7 +88,7 @@ trait Trackeable
     /**
      * Get registerUser
      *
-     * @return \AppBundle\Entity\User
+     * @return \App\Entity\User
      */
     public function getRegisterUser()
     {
@@ -98,9 +98,9 @@ trait Trackeable
     /**
      * Set lastUpdateUser
      *
-     * @param \AppBundle\Entity\User $lastUpdateUser
+     * @param \App\Entity\User $lastUpdateUser
      */
-    public function setLastUpdateUser(\AppBundle\Entity\User $lastUpdateUser = null)
+    public function setLastUpdateUser(\App\Entity\User $lastUpdateUser = null)
     {
         $this->lastUpdateUser = $lastUpdateUser;
 
@@ -110,7 +110,7 @@ trait Trackeable
     /**
      * Get lastUpdateUser
      *
-     * @return \AppBundle\Entity\User
+     * @return \App\Entity\User
      */
     public function getLastUpdateUser()
     {

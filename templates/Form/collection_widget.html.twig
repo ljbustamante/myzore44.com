@@ -1,0 +1,15 @@
+{% block form_row %}
+<div class="form-group {{ errors|length > 0 ? 'has-error has-feedback'  : '' }}">
+    {#{ dump(form.vars) }#}
+    {{ form_label(form) }}
+    <ol id="{{ form.vars.id }}-fields-list" data-prototype="{{ form_widget(form.vars.prototype)|e('html_attr') }}" data-widget-tags="{{ '<li></li>'|e }}">
+    {% for component in form %}
+        <li>
+            {{ form_errors(component) }}
+            {{ form_widget(component) }}
+        </li>
+    {% endfor %}
+    </ol>
+    <button type="button" class="add-another-collection-widget" data-list="#{{ form.vars.id }}-fields-list">Agregar elemento</button>
+</div>
+{% endblock form_row %}

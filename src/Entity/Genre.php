@@ -47,6 +47,11 @@ class Genre
         return $this->id;
     }
 
+    public function __toString()
+    {
+        return $this->genre;
+    }
+
     public function getGenre(): ?string
     {
         return $this->genre;

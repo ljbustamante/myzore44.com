@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -14,6 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class ProductType
 {
     use \App\Traits\Trackeable;
+    use \App\Traits\Activable;
 
     /**
      * @ORM\Id
@@ -40,5 +43,53 @@ class ProductType
     {
         // parent::__construct();
         $this->productAttributes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->productType;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getProductType(): ?string
+    {
+        return $this->productType;
+    }
+
+    public function setProductType(string $productType): self
+    {
+        $this->productType = $productType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductAttribute[]
+     */
+    public function getProductAttributes(): Collection
+    {
+        return $this->productAttributes;
+    }
+
+    public function addProductAttribute(ProductAttribute $productAttribute): self
+    {
+        if (!$this->productAttributes->contains($productAttribute)) {
+            $this->productAttributes[] = $productAttribute;
+        }
+
+        return $this;
+    }
+
+    public function removeProductAttribute(ProductAttribute $productAttribute): self
+    {
+        if ($this->productAttributes->contains($productAttribute)) {
+            $this->productAttributes->removeElement($productAttribute);
+        }
+
+        return $this;
     }
 }

@@ -37,4 +37,38 @@ class ProductAttributeValue
     {
         // parent::__construct();
     }
+
+    public function __toString()
+    {
+        return $this->productAttributeValue;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getProductAttributeValue(): ?string
+    {
+        return $this->productAttributeValue;
+    }
+
+    public function setProductAttributeValue(string $productAttributeValue): self
+    {
+        $this->productAttributeValue = $productAttributeValue;
+
+        return $this;
+    }
+
+    public function getProductAttribute(): ?ProductAttribute
+    {
+        return $this->productAttribute;
+    }
+
+    public function setProductAttribute(?ProductAttribute $productAttribute): self
+    {
+        $this->productAttribute = $productAttribute;
+
+        return $this;
+    }
 }

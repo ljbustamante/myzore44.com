@@ -5,27 +5,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Genre as EntityCrud;
-use App\Form\Type\Admin\GenreType as EntityFormType;
+use App\Entity\Catalogue as EntityCrud;
+use App\Form\Type\Admin\CatalogueType as EntityFormType;
 
-class GenreController extends AbstractController
+class CatalogueController extends AbstractController
 {
-    protected $entityName = 'Genre';
-    protected $entityLabel = 'Género';
-    protected $routeList = 'admin_genre_list';
-    protected $routeAdd = 'admin_genre_add';
-    protected $routeEdit = 'admin_genre_edit';
-    protected $routeDelete = 'admin_genre_delete';
-    protected $parameterId = 'idGenre';
+    protected $entityName = 'Catalogue';
+    protected $entityLabel = 'Catalogo';
+    protected $routeList = 'admin_catalogue_list';
+    protected $routeAdd = 'admin_catalogue_add';
+    protected $routeEdit = 'admin_catalogue_edit';
+    protected $routeDelete = 'admin_catalogue_delete';
+    protected $parameterId = 'idCatalogue';
 
     /**
-     * @Route("genero/", name="admin_genre_list")
+     * @Route("catalogo/", name="admin_catalogue_list")
      */
     public function list(Request $request){
         $entities =  $this->getDoctrine()->getRepository(EntityCrud::class)->findAll();
 
         $table_conf = ['columns' => [
-                        ['header_label' => 'Género', 'header_alignment' => 'left', 'field' => 'genre', 'data_alignment' => 'left'], 
+                        ['header_label' => 'Nombre de Catalogo', 'header_alignment' => 'left', 'field' => 'name', 'data_alignment' => 'left'], 
+                        ['header_label' => 'Campaña', 'header_alignment' => 'left', 'field' => ['campaign', 'name'], 'data_alignment' => 'left'], 
+                        ['header_label' => 'Inicio', 'header_alignment' => 'center', 'field' => 'startDate', 'data_alignment' => 'center'], 
+                        ['header_label' => 'Final', 'header_alignment' => 'center', 'field' => 'endDate', 'data_alignment' => 'center'], 
                         ['header_label' => 'Activo', 'header_alignment' => 'center', 'field' => 'active', 'data_alignment' => 'center']
                        ], 
                        'cardinal' => true,
@@ -50,17 +53,17 @@ class GenreController extends AbstractController
     }
 
     /**
-     * @Route("genero/agregar", 
-     *         name="admin_genre_add"
+     * @Route("catalogo/agregar", 
+     *         name="admin_catalogue_add"
      * )
-     * @Route("genero/editar/{idGenre}", 
-     *         defaults={"idGenre"=null}, 
-     *         requirements={"idGenre"="\d+"}, 
-     *         name="admin_genre_edit"
+     * @Route("catalogo/editar/{idCatalogue}", 
+     *         defaults={"idCatalogue"=null}, 
+     *         requirements={"idCatalogue"="\d+"}, 
+     *         name="admin_catalogue_edit"
      * )
      */
-    public function edit(Request $request, $idGenre = null){
-        $entity = $this->entityFromId($idGenre);
+    public function edit(Request $request, $idCatalogue = null){
+        $entity = $this->entityFromId($idCatalogue);
         $entityForm = $this->createForm(EntityFormType::class, $entity);
 
         $entityForm->handleRequest($request);
@@ -68,6 +71,11 @@ class GenreController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+
+            $this->addFlash(
+                'success',
+                ucfirst($this->entityLabel) . ' <strong>' . $entity . '</strong> guardada!'
+            );
 
             switch($entityForm->getClickedButton()->getName()){
                 case 'save_edit':
@@ -91,13 +99,13 @@ class GenreController extends AbstractController
     }
 
     /**
-     * @Route("genero/eliminar/{idGenre}", 
-     *         requirements={"idGenre"="\d+"}, 
-     *         name="admin_genre_delete"
+     * @Route("catalogo/eliminar/{idCatalogue}", 
+     *         requirements={"idCatalogue"="\d+"}, 
+     *         name="admin_catalogue_delete"
      * )
      */
-    public function delete(Request $request, $idGenre){
-        $entity = $this->entityFromId($idGenre);
+    public function delete(Request $request, $idCatalogue){
+        $entity = $this->entityFromId($idCatalogue);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
@@ -106,7 +114,7 @@ class GenreController extends AbstractController
 
         $this->addFlash(
             'success',
-            ucfirst($this->entityLabel) . ' <strong>' . $entity . '</strong> eliminado!'
+            ucfirst($this->entityLabel) . ' <strong>' . $entity . '</strong> eliminada!'
         );
 
         return $this->redirect($this->generateUrl($this->routeList));

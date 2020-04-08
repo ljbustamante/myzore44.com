@@ -15,6 +15,7 @@ class Catalogue
 {
     use \App\Traits\Trackeable;
     use \App\Traits\Sluggable;
+    use \App\Traits\Activable;
 
     /**
      * @ORM\Id
@@ -42,5 +43,51 @@ class Catalogue
     public function __construct()
     {
         // parent::__construct();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getStartDate(): ?\DateTimeInterface
+    {
+        return $this->startDate;
+    }
+
+    public function setStartDate(?\DateTimeInterface $startDate): self
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(?\DateTimeInterface $endDate): self
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    public function getCampaign(): ?Campaign
+    {
+        return $this->campaign;
+    }
+
+    public function setCampaign(?Campaign $campaign): self
+    {
+        $this->campaign = $campaign;
+
+        return $this;
     }
 }

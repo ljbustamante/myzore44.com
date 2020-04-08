@@ -1,0 +1,49 @@
+{% extends 'AdminLTE/form_detail.html.twig' %}
+
+{#% form_theme form.productAttributeValues 'Form\\collection_widget.html.twig' %#}
+
+{% block page_title %}Edición de Atributo de Producto{% endblock %}
+{% block page_subtitle %}{{ form.vars.data.genre|default('Nuevo') }}{% endblock %}
+{% block form_content %}
+{#{ dump(form.vars.data.image) }}
+{% thumbnail form.vars.data.image, 'small' %#}
+{{ form_errors(form) }}
+{{ form_start(form) }}
+	{{ form_row(form.productAttribute) }}
+	<div class="form-group">
+		{#{ dump(form.productAttributeValues) }#}
+		{{ form_label(form.productAttributeValues) }}
+		<ol id="{{ form.productAttributeValues.vars.id }}-fields-list" data-prototype="{{ form_widget(form.productAttributeValues.vars.prototype)|e('html_attr') }}" data-widget-tags="{{ '<li></li>'|e }}">
+		{% for component in form.productAttributeValues %}
+			<li>
+				{{ form_errors(component) }}
+				{{ form_widget(component) }}
+			</li>
+		{% endfor %}
+		</ol>
+		<button type="button" class="add-another-collection-widget" data-list="#{{ form.productAttributeValues.vars.id }}-fields-list">Agregar elemento</button>
+
+	</div>
+	{{ form_row(form.active) }}
+	{{ form_row(form.actions) }}
+{{ form_end(form) }}
+{#{ form(form) }#}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+jQuery(document).ready(function () {
+    jQuery('.add-another-collection-widget').click(function (e) {
+        var list = jQuery(jQuery(this).attr('data-list'));
+        var counter = list.data('widget-counter') | list.children().length;
+        if (!counter) { counter = list.children().length; }
+        var newWidget = list.attr('data-prototype');
+        newWidget = newWidget.replace(/__name__/g, counter);
+        counter++;
+        list.data(' widget-counter', counter);
+        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+        newElem.appendTo(list);
+    });
+});
+</script>
+{% endblock javascripts %}

@@ -1,0 +1,54 @@
+{% extends 'AdminLTE/Layout/layout.html.twig' %}
+{% import 'AdminLTE/macros.html.twig' as macros %}
+
+{% if form.actions is defined %}
+{% form_theme form.actions 'Admin/actions.html.twig' %}
+{% endif %}
+
+{% if form.save_edit is defined %}
+{% form_theme form.save_edit 'Admin/actions.html.twig' %}
+{% endif %}
+
+{% block page_title %}Bienvenido{% endblock %}
+{% block page_subtitle %}Panel de control{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+    div.tab-pane{
+        padding: 15px;
+    }
+    </style>
+{% endblock %}
+{% block page_content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-info">
+            {# <div class="box-header">
+                <h3 class="box-title">{% block form_title %}{% endblock %}</h3>
+            </div> #}
+            <div class="box-body">
+                {#{ dump(app.session.flashbag.all) }#}
+                {% block alerts %}
+                {{ macros.flash_message() }}
+                {% endblock %}
+
+            	{% block form_content %}
+                {{ form(form) }}
+            	{% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% if cancel_url is defined %}
+    <script type="text/javascript">
+    $(function(){
+        $('#{{ form.actions.cancel.vars.id }}').click(function(){
+            location.href = "{{ cancel_url }}";
+        });
+    })
+    </script>
+    {% endif %}
+{% endblock javascripts %}

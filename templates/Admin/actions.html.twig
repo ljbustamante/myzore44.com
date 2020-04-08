@@ -1,0 +1,24 @@
+{%- block button_widget -%}
+    {%- if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- elseif label is same as(false) -%}
+            {% set translation_domain = false %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    {% if form.vars.name == 'save_edit' %}
+    {% set icon_class = 'save' %}
+    {% elseif form.vars.name == 'save_new' %}
+    {% set icon_class = 'plus' %}
+    {% elseif form.vars.name == 'save_list' %}
+    {% set icon_class = 'list-ul' %}
+    {% elseif form.vars.name == 'cancel' %}
+    {% set icon_class = 'times' %}
+    {% endif %}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}><i class="fa fa-{{ icon_class }} mr5"></i> {{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</button>
+{%- endblock button_widget -%}

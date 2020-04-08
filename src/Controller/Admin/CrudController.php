@@ -14,7 +14,7 @@ class CrudController extends AbstractController
                 throw $this->createNotFoundException(ucfirst($this->entityLabel) . 'no existe');
             }
         }else{
-            $entity = new $this->entityName;
+            $entity = new EntityCrud();
         }
 
         return $entity;

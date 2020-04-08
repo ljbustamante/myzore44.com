@@ -5,27 +5,29 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Genre as EntityCrud;
-use App\Form\Type\Admin\GenreType as EntityFormType;
+use App\Entity\Campaign as EntityCrud;
+use App\Form\Type\Admin\CampaignType as EntityFormType;
 
-class GenreController extends AbstractController
+class CampaignController extends AbstractController
 {
-    protected $entityName = 'Genre';
-    protected $entityLabel = 'Género';
-    protected $routeList = 'admin_genre_list';
-    protected $routeAdd = 'admin_genre_add';
-    protected $routeEdit = 'admin_genre_edit';
-    protected $routeDelete = 'admin_genre_delete';
-    protected $parameterId = 'idGenre';
+    protected $entityName = 'Campaign';
+    protected $entityLabel = 'Campaña';
+    protected $routeList = 'admin_campaign_list';
+    protected $routeAdd = 'admin_campaign_add';
+    protected $routeEdit = 'admin_campaign_edit';
+    protected $routeDelete = 'admin_campaign_delete';
+    protected $parameterId = 'idCampaign';
 
     /**
-     * @Route("genero/", name="admin_genre_list")
+     * @Route("campana/", name="admin_campaign_list")
      */
     public function list(Request $request){
         $entities =  $this->getDoctrine()->getRepository(EntityCrud::class)->findAll();
 
         $table_conf = ['columns' => [
-                        ['header_label' => 'Género', 'header_alignment' => 'left', 'field' => 'genre', 'data_alignment' => 'left'], 
+                        ['header_label' => 'Nombre de Campaña', 'header_alignment' => 'left', 'field' => 'name', 'data_alignment' => 'left'], 
+                        ['header_label' => 'Inicio', 'header_alignment' => 'center', 'field' => 'startDate', 'data_alignment' => 'center'], 
+                        ['header_label' => 'Final', 'header_alignment' => 'center', 'field' => 'endDate', 'data_alignment' => 'center'], 
                         ['header_label' => 'Activo', 'header_alignment' => 'center', 'field' => 'active', 'data_alignment' => 'center']
                        ], 
                        'cardinal' => true,
@@ -50,17 +52,17 @@ class GenreController extends AbstractController
     }
 
     /**
-     * @Route("genero/agregar", 
-     *         name="admin_genre_add"
+     * @Route("campana/agregar", 
+     *         name="admin_campaign_add"
      * )
-     * @Route("genero/editar/{idGenre}", 
-     *         defaults={"idGenre"=null}, 
-     *         requirements={"idGenre"="\d+"}, 
-     *         name="admin_genre_edit"
+     * @Route("campana/editar/{idCampaign}", 
+     *         defaults={"idCampaign"=null}, 
+     *         requirements={"idCampaign"="\d+"}, 
+     *         name="admin_campaign_edit"
      * )
      */
-    public function edit(Request $request, $idGenre = null){
-        $entity = $this->entityFromId($idGenre);
+    public function edit(Request $request, $idCampaign = null){
+        $entity = $this->entityFromId($idCampaign);
         $entityForm = $this->createForm(EntityFormType::class, $entity);
 
         $entityForm->handleRequest($request);
@@ -68,6 +70,11 @@ class GenreController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+
+            $this->addFlash(
+                'success',
+                ucfirst($this->entityLabel) . ' <strong>' . $entity . '</strong> guardada!'
+            );
 
             switch($entityForm->getClickedButton()->getName()){
                 case 'save_edit':
@@ -91,13 +98,13 @@ class GenreController extends AbstractController
     }
 
     /**
-     * @Route("genero/eliminar/{idGenre}", 
+     * @Route("campana/eliminar/{idCampaign}", 
      *         requirements={"idGenre"="\d+"}, 
-     *         name="admin_genre_delete"
+     *         name="admin_campaign_delete"
      * )
      */
-    public function delete(Request $request, $idGenre){
-        $entity = $this->entityFromId($idGenre);
+    public function delete(Request $request, $idCampaign){
+        $entity = $this->entityFromId($idCampaign);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
@@ -106,7 +113,7 @@ class GenreController extends AbstractController
 
         $this->addFlash(
             'success',
-            ucfirst($this->entityLabel) . ' <strong>' . $entity . '</strong> eliminado!'
+            ucfirst($this->entityLabel) . ' <strong>' . $entity . '</strong> eliminada!'
         );
 
         return $this->redirect($this->generateUrl($this->routeList));
