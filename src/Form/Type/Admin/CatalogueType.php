@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use App\Entity\Catalogue;
 use App\Entity\Campaign;
-use App\Form\Type\ActionsType;
+use App\Form\Type\Admin\ActionsType;
 
 class CatalogueType extends AbstractType
 {

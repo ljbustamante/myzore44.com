@@ -1,0 +1,64 @@
+{% extends 'AdminLTE/form_detail.html.twig' %}
+{% form_theme form.productGroupAttributesValue 'Form\\collection_widget.html.twig' %}
+
+{% block page_title %}Edición de Producto{% endblock %}
+{% block page_subtitle %}{{ form.vars.data.genre|default('Nuevo') }}{% endblock %}
+{% block form_content %}
+{#{ dump(form.vars.data.image) }}
+{% thumbnail form.vars.data.image, 'small' %#}
+{{ form_errors(form) }}
+{{ form_start(form) }}
+    {{ form_row(form.productGroupAttributesValue) }}
+	{{ form_row(form.actions) }}
+{{ form_end(form) }}
+{#{ form(form) }#}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+jQuery(document).ready(function () {
+	setCollectionList();
+	//showChoiceOptions();
+});
+
+function setCollectionList(){
+	jQuery('.add-another-collection-widget').unbind('click');
+	jQuery('.add-another-collection-widget').click(function (e) {
+		var list = jQuery(jQuery(this).attr('data-list'));
+		console.log(list);
+		var counter = list.data('widget-counter') | list.children().length;
+		
+        if (!counter) { counter = list.children().length; }
+		console.log(counter);
+        // grab the prototype template
+		var newWidget = list.attr('data-prototype');
+
+		var prototypeName = list.attr('data-prototype-name');
+		//console.log("Prototype name: " + prototypeName);
+		var repString = new RegExp(prototypeName, "g");
+        // replace the "__name__" used in the id and name of the prototype
+        // with a number that's unique to your emails
+		// end name attribute looks like name="contact[emails][2]"
+		//console.log("Counter: " + counter);
+        newWidget = newWidget.replace(repString, counter);
+        // Increase the counter
+        counter++;
+        // And store it, the length cannot be used if deleting widgets is allowed
+        list.data(' widget-counter', counter);
+
+        // create a new list element and add it to the list
+        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+		newElem.appendTo(list);
+		
+		//verificamos si el elemento que agregamos es de tipo collection y si es asi volvemos a setear
+		//if(redefine == true){
+			//console.log("Reload setCollectionList")
+		if(prototypeName == '__name__'){
+			setCollectionList();
+		}
+		//}
+		//console.log("End add element");
+    });
+}
+</script>
+{% endblock javascripts %}

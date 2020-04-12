@@ -4,13 +4,14 @@ namespace App\Form\Type\Admin;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use App\Entity\ProductType;
 use App\Entity\ProductAttribute;
-use App\Form\Type\ActionsType;
+use App\Form\Type\Admin\ActionsType;
 
 class ProductTypeType extends AbstractType
 {
@@ -41,6 +42,7 @@ class ProductTypeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ProductType::class,
+            'productAttributes' => []
         ]);
     }
 }

@@ -5,28 +5,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\ProductType as EntityCrud;
-use App\Entity\ProductAttribute;
-use App\Form\Type\Admin\ProductTypeType as EntityFormType;
+use App\Entity\Product as EntityCrud;
+use App\Form\Type\Admin\ProductType as EntityFormType;
+use App\Form\Type\Admin\Product\ProductGroupAttributesValueType;
 
-class ProductTypeController extends AbstractController
+class ProductController extends AbstractController
 {
-    protected $entityName = 'ProductType';
-    protected $entityLabel = 'Tipo de Producto';
-    protected $routeList = 'admin_producttype_list';
-    protected $routeAdd = 'admin_producttype_add';
-    protected $routeEdit = 'admin_producttype_edit';
-    protected $routeDelete = 'admin_producttype_delete';
-    protected $parameterId = 'idProductType';
+    protected $entityName = 'Product';
+    protected $entityLabel = 'Producto';
+    protected $routeList = 'admin_product_list';
+    protected $routeAdd = 'admin_product_add';
+    protected $routeEdit = 'admin_product_edit';
+    protected $routeDelete = 'admin_product_delete';
+    protected $parameterId = 'idProduct';
 
     /**
-     * @Route("tipoproducto/", name="admin_producttype_list")
+     * @Route("producto/", name="admin_product_list")
      */
     public function list(Request $request){
         $entities =  $this->getDoctrine()->getRepository(EntityCrud::class)->findAll();
 
         $table_conf = ['columns' => [
-                        ['header_label' => 'Tipo de Producto', 'header_alignment' => 'left', 'field' => 'productType', 'data_alignment' => 'left'], 
+                        ['header_label' => 'Código', 'header_alignment' => 'left', 'field' => 'code', 'data_alignment' => 'left'], 
+                        ['header_label' => 'Nombre', 'header_alignment' => 'left', 'field' => 'name', 'data_alignment' => 'left'], 
+                        ['header_label' => 'Tipo', 'header_alignment' => 'left', 'field' => 'productType', 'data_alignment' => 'left'], 
                         ['header_label' => 'Activo', 'header_alignment' => 'center', 'field' => 'active', 'data_alignment' => 'center']
                        ], 
                        'cardinal' => true,
@@ -43,7 +45,13 @@ class ProductTypeController extends AbstractController
                                      'name_id' => $this->parameterId, 
                                      'button_class' => 'btn-danger', 
                                      'icon_class' => 'fa fa-times'
-                                    ]
+                                ],
+                        'attributeValue' => ['label' => 'Valor de atributos de ' . $this->entityLabel, 
+                                    'route' => 'admin_product_groupsattributevalue', 
+                                    'name_id' => $this->parameterId, 
+                                    'button_class' => 'btn-info', 
+                                    'icon_class' => 'fa fa-cogs'
+                                   ]
                        ]
                       ];
 
@@ -51,17 +59,17 @@ class ProductTypeController extends AbstractController
     }
 
     /**
-     * @Route("tipoproducto/agregar", 
-     *         name="admin_producttype_add"
+     * @Route("producto/agregar", 
+     *         name="admin_product_add"
      * )
-     * @Route("tipoproducto/editar/{idProductType}", 
-     *         defaults={"idProductType"=null}, 
-     *         requirements={"idProductType"="\d+"}, 
-     *         name="admin_producttype_edit"
+     * @Route("producto/editar/{idProduct}", 
+     *         defaults={"idProduct"=null}, 
+     *         requirements={"idProduct"="\d+"}, 
+     *         name="admin_product_edit"
      * )
      */
-    public function edit(Request $request, $idProductType = null){
-        $entity = $this->entityFromId($idProductType);
+    public function edit(Request $request, $idProduct = null){
+        $entity = $this->entityFromId($idProduct);
         $entityForm = $this->createForm(EntityFormType::class, $entity);
 
         $entityForm->handleRequest($request);
@@ -92,13 +100,13 @@ class ProductTypeController extends AbstractController
     }
 
     /**
-     * @Route("tipoproducto/eliminar/{idProductType}", 
-     *         requirements={"idProductType"="\d+"}, 
-     *         name="admin_producttype_delete"
+     * @Route("producto/eliminar/{idProduct}", 
+     *         requirements={"idProduct"="\d+"}, 
+     *         name="admin_product_delete"
      * )
      */
-    public function delete(Request $request, $idProductType){
-        $entity = $this->entityFromId($idProductType);
+    public function delete(Request $request, $idProduct){
+        $entity = $this->entityFromId($idProduct);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
@@ -126,5 +134,43 @@ class ProductTypeController extends AbstractController
         }
 
         return $entity;
+    }
+
+    /**
+     * @Route("producto/valor-atributos/{idProduct}", 
+     *         defaults={"idProduct"=null}, 
+     *         requirements={"idProduct"="\d+"}, 
+     *         name="admin_product_groupsattributevalue"
+     * )
+     */
+    public function groupsAttributeValue(Request $request, $idProduct = null){
+        $entity = $this->entityFromId($idProduct);
+        $entityForm = $this->createForm(ProductGroupAttributesValueType::class, $entity);
+
+        $entityForm->handleRequest($request);
+        if ($entityForm->isSubmitted() && $entityForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+
+            switch($entityForm->getClickedButton()->getName()){
+                case 'save_edit':
+                    return $this->redirectToRoute($this->routeEdit, [$this->parameterId => $entity->getId()]);
+                    break;
+                case 'save_new':
+                    return $this->redirectToRoute($this->routeAdd);
+                    break;
+                case 'save_list':
+                    return $this->redirectToRoute($this->routeList);
+                    break;
+                default: 
+                    return $this->redirectToRoute($this->routeEdit, [$this->parameterId => $entity->getId()]);
+            }
+        }
+
+        return $this->render('Admin/' . $this->entityName . '/groupsAttributeValue.html.twig', [
+            'form' => $entityForm->createView(),
+            'cancel_url' => $this->generateUrl($this->routeList)
+        ]);
     }
 }

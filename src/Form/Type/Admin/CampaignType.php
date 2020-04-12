@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use App\Entity\Campaign;
-use App\Form\Type\ActionsType;
+use App\Form\Type\Admin\ActionsType;
 
 class CampaignType extends AbstractType
 {

@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use App\Entity\Genre;
-use App\Form\Type\ActionsType;
+use App\Form\Type\Admin\ActionsType;
 
 class GenreType extends AbstractType
 {

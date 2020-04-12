@@ -35,10 +35,17 @@ class ProductAttribute
      **/
     private $productAttributeValues;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="ProductType", mappedBy="productAttributes")
+     **/
+    private $productTypes;
+
+
     public function __construct()
     {
         // parent::__construct();
         $this->productAttributeValues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->productTypes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()
@@ -89,6 +96,34 @@ class ProductAttribute
             if ($productAttributeValue->getProductAttribute() === $this) {
                 $productAttributeValue->setProductAttribute(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductType[]
+     */
+    public function getProductTypes(): Collection
+    {
+        return $this->productTypes;
+    }
+
+    public function addProductType(ProductType $productType): self
+    {
+        if (!$this->productTypes->contains($productType)) {
+            $this->productTypes[] = $productType;
+            $productType->addProductAttribute($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductType(ProductType $productType): self
+    {
+        if ($this->productTypes->contains($productType)) {
+            $this->productTypes->removeElement($productType);
+            $productType->removeProductAttribute($this);
         }
 
         return $this;

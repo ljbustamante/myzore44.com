@@ -70,9 +70,9 @@ trait Publishable
     /**
      * Set publishedBy
      *
-     * @param \AppBundle\Entity\User $publishedBy
+     * @param \App\Entity\User $publishedBy
      */
-    public function setPublishedBy(\AppBundle\Entity\User $publishedBy = null)
+    public function setPublishedBy(\App\Entity\User $publishedBy = null)
     {
         $this->publishedBy = $publishedBy;
 
@@ -82,7 +82,7 @@ trait Publishable
     /**
      * Get publishedBy
      *
-     * @return \AppBundle\Entity\User
+     * @return \App\Entity\User
      */
     public function getPublishedBy()
     {
