@@ -39,15 +39,22 @@ class ProductGroupAttributeValue
      **/
     private $productAttributeValues;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CatalogueProductGroupAttributeValue", mappedBy="productGroupAttributeValue", cascade={"persist"})
+     **/
+    private $catalogueProductGroupAttributeValues;
+
     public function __construct()
     {
         // parent::__construct();
         $this->productAttributeValues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->catalogueProductGroupAttributeValues = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()
     {
-        return $this->product;
+
+        return array_reduce($this->productAttributeValues->toArray(), function($c, $a){ return $c . ' - ' . $a->getProductAttributeValue(); }, '');
     }
 
     public function getId(): ?int
@@ -88,6 +95,37 @@ class ProductGroupAttributeValue
     {
         if ($this->productAttributeValues->contains($productAttributeValue)) {
             $this->productAttributeValues->removeElement($productAttributeValue);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CatalogueProductGroupAttributeValue[]
+     */
+    public function getCatalogueProductGroupAttributeValues(): Collection
+    {
+        return $this->catalogueProductGroupAttributeValues;
+    }
+
+    public function addCatalogueProductGroupAttributeValue(CatalogueProductGroupAttributeValue $catalogueProductGroupAttributeValue): self
+    {
+        if (!$this->catalogueProductGroupAttributeValues->contains($catalogueProductGroupAttributeValue)) {
+            $this->catalogueProductGroupAttributeValues[] = $catalogueProductGroupAttributeValue;
+            $catalogueProductGroupAttributeValue->setProductGroupAttributeValue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCatalogueProductGroupAttributeValue(CatalogueProductGroupAttributeValue $catalogueProductGroupAttributeValue): self
+    {
+        if ($this->catalogueProductGroupAttributeValues->contains($catalogueProductGroupAttributeValue)) {
+            $this->catalogueProductGroupAttributeValues->removeElement($catalogueProductGroupAttributeValue);
+            // set the owning side to null (unless already changed)
+            if ($catalogueProductGroupAttributeValue->getProductGroupAttributeValue() === $this) {
+                $catalogueProductGroupAttributeValue->setProductGroupAttributeValue(null);
+            }
         }
 
         return $this;

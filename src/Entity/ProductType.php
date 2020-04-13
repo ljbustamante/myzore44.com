@@ -48,6 +48,7 @@ class ProductType
     {
         // parent::__construct();
         $this->productAttributes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function __toString()
@@ -93,6 +94,37 @@ class ProductType
     {
         if ($this->productAttributes->contains($productAttribute)) {
             $this->productAttributes->removeElement($productAttribute);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setProductType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+            // set the owning side to null (unless already changed)
+            if ($product->getProductType() === $this) {
+                $product->setProductType(null);
+            }
         }
 
         return $this;

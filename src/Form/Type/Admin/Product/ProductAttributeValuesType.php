@@ -31,7 +31,10 @@ class ProductAttributeValuesType extends AbstractType
                          return ['product_attribute_id' => $attributeValue->getProductAttribute()->getId()];
                      },
                      'placeholder' => 'Seleccione el valor de atributo', 
-                     'choices' => array_reduce($options['productObj']->getProductType()->getProductAttributes()->toArray(), function($c, $i){ return array_merge($c, $i->getProductAttributeValues()->toArray()); }, [])
+                     'choices' => array_reduce($options['productObj']->getProductType()->getProductAttributes()->toArray(), 
+                                               function($c, $i){ 
+                                                   return array_merge($c, $i->getProductAttributeValues()->toArray()); 
+                                                }, [])
                     ],
                  'allow_add' => true, 
                  'allow_delete' => true, 

@@ -61,11 +61,16 @@ class Product
      **/
     private $productGroupAttributesValue;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CatalogueProduct", mappedBy="product", cascade={"persist"})
+     **/
+    private $catalogueProducts;
+
     public function __construct()
     {
         // parent::__construct();
         $this->productGroupAttributesValue = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->productColors = new ArrayCollection();
+        $this->catalogueProducts = new ArrayCollection();
     }
 
     public function __toString()
@@ -163,6 +168,37 @@ class Product
             // set the owning side to null (unless already changed)
             if ($productGroupAttributesValue->getProduct() === $this) {
                 $productGroupAttributesValue->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CatalogueProduct[]
+     */
+    public function getCatalogueProducts(): Collection
+    {
+        return $this->catalogueProducts;
+    }
+
+    public function addCatalogueProduct(CatalogueProduct $catalogueProduct): self
+    {
+        if (!$this->catalogueProducts->contains($catalogueProduct)) {
+            $this->catalogueProducts[] = $catalogueProduct;
+            $catalogueProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCatalogueProduct(CatalogueProduct $catalogueProduct): self
+    {
+        if ($this->catalogueProducts->contains($catalogueProduct)) {
+            $this->catalogueProducts->removeElement($catalogueProduct);
+            // set the owning side to null (unless already changed)
+            if ($catalogueProduct->getProduct() === $this) {
+                $catalogueProduct->setProduct(null);
             }
         }
 

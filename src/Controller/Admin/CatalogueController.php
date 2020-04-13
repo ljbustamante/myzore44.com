@@ -45,7 +45,13 @@ class CatalogueController extends AbstractController
                                      'name_id' => $this->parameterId, 
                                      'button_class' => 'btn-danger', 
                                      'icon_class' => 'fa fa-times'
-                                    ]
+                                    ],
+                        'products' => ['label' => 'Productos de ' . $this->entityLabel, 
+                                    'route' => 'admin_catalogueproduct_list', 
+                                    'name_id' => $this->parameterId, 
+                                    'button_class' => 'btn-info', 
+                                    'icon_class' => 'fa fa-cogs'
+                                   ] 
                        ]
                       ];
 

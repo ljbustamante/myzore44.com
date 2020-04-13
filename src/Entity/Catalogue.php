@@ -1,7 +1,9 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -40,9 +42,15 @@ class Catalogue
      */
     private $endDate;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CatalogueProduct", mappedBy="catalogue", cascade={"persist"})
+     **/
+    private $catalogueProducts;
+
     public function __construct()
     {
         // parent::__construct();
+        $this->catalogueProducts = new ArrayCollection();
     }
 
     public function __toString()
@@ -87,6 +95,37 @@ class Catalogue
     public function setCampaign(?Campaign $campaign): self
     {
         $this->campaign = $campaign;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CatalogueProduct[]
+     */
+    public function getCatalogueProducts(): Collection
+    {
+        return $this->catalogueProducts;
+    }
+
+    public function addCatalogueProduct(CatalogueProduct $catalogueProduct): self
+    {
+        if (!$this->catalogueProducts->contains($catalogueProduct)) {
+            $this->catalogueProducts[] = $catalogueProduct;
+            $catalogueProduct->setCatalogue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCatalogueProduct(CatalogueProduct $catalogueProduct): self
+    {
+        if ($this->catalogueProducts->contains($catalogueProduct)) {
+            $this->catalogueProducts->removeElement($catalogueProduct);
+            // set the owning side to null (unless already changed)
+            if ($catalogueProduct->getCatalogue() === $this) {
+                $catalogueProduct->setCatalogue(null);
+            }
+        }
 
         return $this;
     }
