@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Catalogue as EntityParentCrud;
 use App\Entity\CatalogueProduct as EntityCrud;
 use App\Form\Type\Admin\CatalogueProductType as EntityFormType;
+use App\Form\Type\Admin\CatalogueProduct\CatalogueProductGroupAttributeValuesType;
 
 class CatalogueProductController extends AbstractController
 {
@@ -55,7 +56,13 @@ class CatalogueProductController extends AbstractController
                                      'name_id' => $this->parameterId, 
                                      'button_class' => 'btn-danger', 
                                      'icon_class' => 'fa fa-times'
-                                    ]
+                                ], 
+                        'attributeValue' => ['label' => 'Grupos de atributos de ' . $this->entityLabel, 
+                                             'route' => 'admin_catalogueproduct_groupsattributes', 
+                                             'name_id' => $this->parameterId, 
+                                             'button_class' => 'btn-info', 
+                                             'icon_class' => 'fa fa-cogs'
+                                            ]
                        ]
                       ];
 
@@ -142,6 +149,54 @@ class CatalogueProductController extends AbstractController
         );
 
         return $this->redirect($this->generateUrl($this->routeList, [$this->parentParameterId => $entityParent->getId()]));
+    }
+
+    /**
+     * @Route("catalogo-productos/grupos-atributos/{idCatalogueProduct}", 
+     *         requirements={"idCatalogueProduct"="\d+"}, 
+     *         name="admin_catalogueproduct_groupsattributes"
+     * )
+     */
+    public function groupsAttributes(Request $request, $idCatalogueProduct = null){
+       
+        $entity = $this->getDoctrine()
+                       ->getRepository(EntityCrud::class)
+                       ->find($idCatalogueProduct);
+        if(!$entity){
+            throw $this->createNotFoundException(ucfirst($this->entityLabel) . ' no existe');
+        }
+
+        $entityParent = $entity->getCatalogue();
+        $entityForm = $this->createForm(CatalogueProductGroupAttributeValuesType::class, $entity);
+
+        $entityForm->handleRequest($request);
+        if ($entityForm->isSubmitted() && $entityForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                ucfirst($this->entityLabel) . ' <strong>' . $entity . '</strong> guardada!'
+            );
+
+            switch($entityForm->getClickedButton()->getName()){
+                case 'save_edit':
+                    return $this->redirectToRoute($this->routeEdit, [$this->parameterId => $entity->getId()]);
+                    break;
+                case 'save_list':
+                    return $this->redirectToRoute($this->routeList, [$this->parentParameterId => $entityParent->getId()]);
+                    break;
+                default: 
+                    return $this->redirectToRoute($this->routeEdit, [$this->parameterId => $entity->getId()]);
+            }
+        }
+
+        return $this->render('Admin/' . $this->entityName . '/catalogueGroupsAttributeValue.html.twig', [
+            'form' => $entityForm->createView(),
+            'cancel_url' => $this->generateUrl($this->routeList, [$this->parentParameterId => $entityParent->getId()]), 
+            'parent' => $entityParent
+        ]);
     }
 
     public function entityFromId($idEntityParent, $idEntity = null){

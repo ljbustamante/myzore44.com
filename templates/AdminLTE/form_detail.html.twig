@@ -42,7 +42,7 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {% if cancel_url is defined %}
+    {% if cancel_url is defined and form.actions.cancel is defined %}
     <script type="text/javascript">
     $(function(){
         $('#{{ form.actions.cancel.vars.id }}').click(function(){
