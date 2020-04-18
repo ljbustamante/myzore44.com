@@ -1,15 +1,15 @@
 #Security
 fos_user_security_login:
     path:  "/ingresar"
-    defaults:  { _controller: App\Controller\Site\User\SecurityController::loginAction }
+    defaults:  { _controller: FOSUserBundle:Security:login }
 
 fos_user_security_check:
     path: "/verificacion"
-    defaults:  { _controller: App\Controller\Site\User\SecurityController::checkAction }
+    defaults:  { _controller: FOSUserBundle:Security:check }
 
 fos_user_security_logout:
     path: "/salir"
-    defaults:  { _controller: App\Controller\Site\User\SecurityController::logoutAction }
+    defaults:  { _controller: FOSUserBundle:Security:logout }
 
 #Profile
 fos_user_profile_account:
@@ -28,38 +28,38 @@ fos_user_profile_edit:
 fos_user_registration_register:
     path: "/registro"
     # defaults:  { _controller: App\Controller\FOSUserBundle\RegistrationController:register }
-    defaults:  { _controller: App\Controller\Site\User\RegistrationController::registerAction }
+    defaults:  { _controller: FOSUserBundle:Registration:register }
 
 fos_user_registration_check_email:
     path: "/registro/verificar-email"
-    defaults:  { _controller: App\Controller\Site\User\RegistrationController::checkEmailAction }
+    defaults:  { _controller: FOSUserBundle:Registration:checkEmail }
 
 fos_user_registration_confirm:
     path: "/registro/confirmar/{token}"
-    defaults:  { _controller: App\Controller\Site\User\RegistrationController::confirmAction }
+    defaults:  { _controller: FOSUserBundle:Registration:confirm }
 
 fos_user_registration_confirmed:
     path: "/registro/confirmado"
-    defaults:  { _controller:  App\Controller\Site\User\RegistrationController::confirmedAction }
+    defaults:  { _controller:  FOSUserBundle:Registration:confirmed }
 
 #Resetting
 fos_user_resetting_request:
     path: "/restablecer-clave/solicitar"
-    defaults:  { _controller:  App\Controller\Site\User\ResettingController::requestAction }
+    defaults:  { _controller:  FOSUserBundle:Resetting:request }
 
 fos_user_resetting_send_email:
     path: "/restablecer-clave/enviar-email"
-    defaults:  { _controller:  App\Controller\Site\User\ResettingController::sendEmailAction }
+    defaults:  { _controller:  FOSUserBundle:Resetting:sendEmail }
 
 fos_user_resetting_check_email:
     path: "/restablecer-clave/verificar-email"
-    defaults:  { _controller:  App\Controller\Site\User\ResettingController::checkEmailAction }
+    defaults:  { _controller:  FOSUserBundle:Resetting:checkEmail }
 
 fos_user_resetting_reset:
     path: "/restablecer-clave/restablecer/{token}"
-    defaults:  { _controller:  App\Controller\Site\User\ResettingController::resetAction }
+    defaults:  { _controller:  FOSUserBundle:Resetting:reset }
 
 #ChangePassword
 fos_user_change_password:
     path: "/cuenta/cambiar-clave"
-    defaults:  { _controller: App\Controller\Site\User\ChangePasswordController::changePasswordAction }
+    defaults:  { _controller: FOSUserBundle:ChangePassword:changePassword }

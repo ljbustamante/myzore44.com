@@ -27,28 +27,65 @@ security:
                 failure_path: admin_fos_user_security_login
                 default_target_path: admin_home_index
 
-            logout:       true
+            logout:
+                path: admin_fos_user_security_logout
             anonymous:    true
-
-        public:
-            pattern: ^/
+        
+        promoter:
+            pattern: ^/promotor
             form_login:
                 # csrf_token_generator: security.csrf.token_manager
-                login_path: user_fos_user_security_login
-                check_path: user_fos_user_security_check
-                failure_path: user_fos_user_security_login
-                default_target_path: user_fos_user_profile_account
+                login_path: promoter_fos_user_security_login
+                check_path: promoter_fos_user_security_check
+                failure_path: promoter_fos_user_security_login
+                default_target_path: promoter_home_index
 
-            logout:       true
+            logout:
+                path: promoter_fos_user_security_logout
+            anonymous:    true
+
+        site_general:
+            pattern: ^/usuario
+            form_login:
+                # csrf_token_generator: security.csrf.token_manager
+                login_path: general_fos_user_security_login
+                check_path: general_fos_user_security_check
+                failure_path: general_fos_user_security_login
+                default_target_path: general_fos_user_profile_account
+
+            logout:
+                path: general_fos_user_security_logout
+            anonymous:    true
+        
+        site_promoter:
+            pattern: ^/\w+/usuario
+            form_login:
+                # csrf_token_generator: security.csrf.token_manager
+                login_path: promoter_user_fos_user_security_login
+                check_path: promoter_user_fos_user_security_check
+                failure_path: promoter_user_fos_user_security_login
+                default_target_path: promoter_user_fos_user_profile_account
+
+            logout:
+                path: promoter_user_fos_user_security_logout
             anonymous:    true
         
         
 
     access_control:
-        - { path: ^/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/usuario/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/usuario/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/usuario/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/usuario/$, role: ROLE_USER }
+        - { path: ^/\w+/usuario/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/\w+/usuario/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/\w+/usuario/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/\w+/usuario/$, role: ROLE_USER }
         - { path: ^/admin/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/$, role: ROLE_ADMIN }
+        - { path: ^/promotor/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/promotor/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/promotor/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/promotor/$, role: ROLE_PROMOTER }

@@ -1,0 +1,4 @@
+admin:
+    resource: '../../src/Controller/Site'
+    type: annotation
+    prefix: /

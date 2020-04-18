@@ -6,7 +6,27 @@ fos_user:
     prefix: '/usuario'
     name_prefix: 'user_'
 
-fos_admin:
+fos_user_promoter:
     resource: "./routes/fos_user.yaml"
+    prefix: '/{promoterSlug}/usuario'
+    name_prefix: 'promoter_user_'
+
+fos_promoter:
+    resource: "./routes/fos_admin.yaml"
+    prefix: '/promotor'
+    name_prefix: 'promoter_'
+
+fos_admin:
+    resource: "./routes/fos_admin.yaml"
     prefix: '/admin'
     name_prefix: 'admin_'
+
+site_general: 
+    resource: "./routes/site.yaml"
+    prefix: '/'
+    name_prefix: 'general_'
+
+site_promoter: 
+    resource: "./routes/site.yaml"
+    prefix: '/{promoterSlug}'
+    name_prefix: 'promoter_'

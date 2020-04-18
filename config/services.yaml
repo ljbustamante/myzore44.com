@@ -36,12 +36,26 @@ services:
         namespace: App\Twig\
         public: true
 
-    # fos_user.registration.form.factory:
-    #     class: FOS\UserBundle\Form\Factory\FormFactory
-    #     public: true
-    #     autowire: true
-    #     arguments: 
-    #         - '@form.factory'
-    #         - '%fos_user.registration.form.name%'
-    #         - '%fos_user.registration.form.type%'
-    #         - '%fos_user.registration.form.validation_groups%'
+    App\Controller\Site\User\ChangePasswordController:
+        arguments:
+            $formFactory: '@fos_user.change_password.form.factory'
+
+    App\Controller\Site\User\RegistrationController:
+        arguments:
+            $formFactory: '@fos_user.registration.form.factory'
+    
+    App\Controller\Site\User\ResettingController:
+        arguments:
+            $formFactory: '@fos_user.resetting.form.factory'
+            $mailer: '@fos_user.mailer.default'
+            $retryTtl: '%fos_user.resetting.retry_ttl%'
+    
+    FOS\UserBundle\Controller\RegistrationController:
+        arguments:
+            $formFactory: '@fos_user.registration.form.factory'
+    
+    FOS\UserBundle\Controller\ResettingController:
+        arguments:
+            $formFactory: '@fos_user.resetting.form.factory'
+            $mailer: '@fos_user.mailer.default'
+            $retryTtl: '%fos_user.resetting.retry_ttl%'

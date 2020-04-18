@@ -6,3 +6,8 @@ fos_user:
         address: "noreply@myzore.com"
         sender_name: "My Zore"
     
+    change_password:
+        form:
+            type:               FOS\UserBundle\Form\Type\RegistrationFormType # or 'fos_user_registration' on Symfony < 2.8
+            name:               fos_user_registration_form
+    

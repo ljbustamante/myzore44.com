@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <title>{% block page_title %}My Zore{% endblock %}</title>
+    </head>
+    <body>
+        <div id="container">
+            <h1>{{ block('page_title') }}</h1>
+            {% if promoter is defined and not promoter is null %}<h2>Tienda de {{ promoter.username }}</h2>{% endif %}
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
