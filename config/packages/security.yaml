@@ -29,6 +29,7 @@ security:
 
             logout:
                 path: admin_fos_user_security_logout
+                target: admin_fos_user_security_login
             anonymous:    true
         
         promoter:
@@ -42,6 +43,7 @@ security:
 
             logout:
                 path: promoter_fos_user_security_logout
+                target: promoter_fos_user_security_login
             anonymous:    true
 
         site_general:
@@ -55,6 +57,7 @@ security:
 
             logout:
                 path: general_fos_user_security_logout
+                target: general_fos_user_security_login
             anonymous:    true
         
         site_promoter:
@@ -73,19 +76,19 @@ security:
         
 
     access_control:
-        - { path: ^/usuario/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/usuario/ingresar, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/usuario/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/usuario/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/usuario/$, role: ROLE_USER }
-        - { path: ^/\w+/usuario/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/usuario/, role: ROLE_USER }
+        - { path: ^/\w+/usuario/ingresar, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/\w+/usuario/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/\w+/usuario/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/\w+/usuario/$, role: ROLE_USER }
-        - { path: ^/admin/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/$, role: ROLE_ADMIN }
-        - { path: ^/promotor/ingresar$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/\w+/usuario/, role: ROLE_USER }
+        - { path: ^/promotor/ingresar, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/promotor/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/promotor/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/promotor/$, role: ROLE_PROMOTER }
+        - { path: ^/promotor/, role: ROLE_PROMOTER }
+        - { path: ^/admin/ingresar, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/registro, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/restablecer-clave, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_ADMIN }

@@ -36,6 +36,10 @@ services:
         namespace: App\Twig\
         public: true
 
+    App\EventSubscriber\AdminLTE\MenuBuilderSubscriber:
+        arguments:
+            $map: '@security.firewall.map'
+    
     App\Controller\Site\User\ChangePasswordController:
         arguments:
             $formFactory: '@fos_user.change_password.form.factory'
@@ -59,3 +63,7 @@ services:
             $formFactory: '@fos_user.resetting.form.factory'
             $mailer: '@fos_user.mailer.default'
             $retryTtl: '%fos_user.resetting.retry_ttl%'
+    
+    useradmin_service:
+        class: App\Controller\Admin\UserController
+        arguments: ['@fos_user.user_manager']

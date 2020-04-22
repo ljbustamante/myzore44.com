@@ -14,6 +14,7 @@ use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -25,13 +26,15 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
      * @var AuthorizationCheckerInterface
      */
     private $security;
+    private $map;
 
     /**
      * @param AuthorizationCheckerInterface $security
      */
-    public function __construct(AuthorizationCheckerInterface $security)
+    public function __construct(AuthorizationCheckerInterface $security, FirewallMap $map)
     {
         $this->security = $security;
+        $this->map = $map;
     }
 
     /**
@@ -53,10 +56,12 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
     public function onSetupNavbar(SidebarMenuEvent $event)
     {
         $request = $event->getRequest();
+        $firewall = $this->map->getFirewallConfig($request)->getName();
 
-        if($this->security->isGranted('ROLE_ADMIN')){
+        $menuItems = [];
+        if($firewall == 'admin'){
             $menuItems = $this->getMenuAdmin($request);
-        }elseif($this->security->isGranted('ROLE_PROMOTER')){
+        }elseif($firewall == 'promoter'){
             $menuItems = $this->getMenuPromoter($request);
         }
 
@@ -68,18 +73,24 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
     protected function getMenuAdmin(Request $request) {
 		// Build your menu here by constructing a MenuItemModel array
 		$menuItems = array(
-            $panel = new MenuItemModel('panel', 'Panel', 'admin_home_index', array(/* options */), 'iconclasses fa fa-tachometer-alt'),
-            $genero = new MenuItemModel('genre', 'Géneros', 'admin_genre_list', array(), 'iconclasses fa fa-sitemap'),
-            $campana = new MenuItemModel('campana', 'Campañas', null, array(/* options */), 'iconclasses fa fa-plane'),
-            $producto = new MenuItemModel('producto', 'Productos', null, array(/* options */), 'iconclasses fa fa-briefcase'),
+            $panel = new MenuItemModel('panel', 'Panel', 'admin_home_index', [], 'iconclasses fa fa-tachometer-alt'),
+            $usuario = new MenuItemModel('usuario', 'Usuarios', null, [], 'iconclasses fa fa-users'),
+            $genero = new MenuItemModel('genre', 'Géneros', 'admin_genre_list', [], 'iconclasses fa fa-sitemap'),
+            $campana = new MenuItemModel('campana', 'Campañas', null, [], 'iconclasses fa fa-plane'),
+            $producto = new MenuItemModel('producto', 'Productos', null, [], 'iconclasses fa fa-briefcase'),
+            $salir = new MenuItemModel('salir', 'Salir', 'admin_fos_user_security_logout', [], 'iconclasses fa fa-sign-out-alt'),
         );
 
-        $campana->addChild(new MenuItemModel('camapana', 'Camapañas', 'admin_campaign_list', array(/* options */), 'iconclasses fa fa-cogs'));
-        $campana->addChild(new MenuItemModel('catalogue', 'Catálogos', 'admin_catalogue_list', array(/* options */), 'iconclasses fa fa-dollar'));
+        $usuario->addChild(new MenuItemModel('admins', 'Administradores', 'admin_admin_list', [], 'iconclasses fa fa-user'));
+        $usuario->addChild(new MenuItemModel('promoters', 'Promotores', 'admin_promoter_list', [], 'iconclasses fa fa-user'));
+        $usuario->addChild(new MenuItemModel('clients', 'Clientes', 'admin_client_list', [], 'iconclasses fa fa-user'));
+        
+        $campana->addChild(new MenuItemModel('campana', 'Campañas', 'admin_campaign_list', [], 'iconclasses fa fa-cogs'));
+        $campana->addChild(new MenuItemModel('catalogue', 'Catálogos', 'admin_catalogue_list', [], 'iconclasses fa fa-dollar'));
 
-        $producto->addChild(new MenuItemModel('product', 'Productos', 'admin_product_list', array(/* options */), 'iconclasses fa fa-dollar'));
-        $producto->addChild(new MenuItemModel('producttype', 'Tipos de Producto', 'admin_producttype_list', array(/* options */), 'iconclasses fa fa-dollar'));
-        $producto->addChild(new MenuItemModel('productattribute', 'Atributos de producto', 'admin_productattribute_list', array(/* options */), 'iconclasses fa fa-dollar'));
+        $producto->addChild(new MenuItemModel('product', 'Productos', 'admin_product_list', [], 'iconclasses fa fa-dollar'));
+        $producto->addChild(new MenuItemModel('producttype', 'Tipos de Producto', 'admin_producttype_list', [], 'iconclasses fa fa-dollar'));
+        $producto->addChild(new MenuItemModel('productattribute', 'Atributos de producto', 'admin_productattribute_list', [], 'iconclasses fa fa-dollar'));
 
         $this->activateByRoute($request->get('_route'), $menuItems);
         return $menuItems;
@@ -88,7 +99,10 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
     protected function getMenuPromoter(Request $request) {
         // Build your menu here by constructing a MenuItemModel array
         $menuItems = array(
-            $panel = new MenuItemModel('panel', 'Panel', 'promoter_home_index', array(/* options */), 'iconclasses fa fa-tachometer-alt'),
+            $panel = new MenuItemModel('panel', 'Panel', 'promoter_home_index', [], 'iconclasses fa fa-tachometer-alt'),
+            $pedido = new MenuItemModel('pedido', 'Pedidos', null, [], 'iconclasses fa fa-user'),
+            $usuario = new MenuItemModel('usuario', 'Clientes', null, [], 'iconclasses fa fa-users'),
+            $salir = new MenuItemModel('salir', 'Salir', 'promoter_fos_user_security_logout', [], 'iconclasses fa fa-sign-out-alt'),
         );
         
         $this->activateByRoute($request->get('_route'), $menuItems);

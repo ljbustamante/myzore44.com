@@ -1,0 +1,21 @@
+{% extends 'AdminLTE/form_detail.html.twig' %}
+
+{% block page_title %}Edición de Usuario{% endblock %}
+{% block page_subtitle %}{{ form.vars.data.username|default('No definido') }}{% endblock %}
+{% block form_content %}
+{{ form_errors(form) }}
+{{ form_start(form) }}
+	{{ form_row(form.username) }}
+	{% if form.plainPassword is defined %}
+		{{ form_row(form.plainPassword) }}
+	{% endif %}
+    {{ form_row(form.email) }}
+	{{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+	{{ form_row(form.enabled) }}
+	{{ form_row(form.actions) }}
+{{ form_end(form) }}
+{% endblock %}
+
+
+

@@ -1,1 +1,30 @@
 {% extends '@AdminLTE/FOSUserBundle/Security/login.html.twig' %}
+{% if app.request.get('_route') == 'promoter_fos_user_security_login' %}
+{% set routeCheck = 'promoter_fos_user_security_check' %}
+{% elseif app.request.get('_route') == 'admin_fos_user_security_login' %}
+{% set routeCheck = 'admin_fos_user_security_check' %}
+{% endif %}
+{% block login_form %}
+<form action="{{ path(routeCheck) }}" method="post">
+    {% block login_form_start %}{% endblock %}
+    <div class="form-group has-feedback">
+        <input type="text" name="_username" class="form-control" placeholder="{{ 'Username'|trans({}, 'AdminLTEBundle') }}" value="{{ last_username|default('') }}">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+    </div>
+    <div class="form-group has-feedback">
+        <input name="_password" type="password" class="form-control" placeholder="{{ 'Password'|trans({}, 'AdminLTEBundle') }}">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+    </div>
+    <div class="form-group">
+        <input id="remember_me" name="_remember_me" type="checkbox">
+        <label for="remember_me">{{ 'Remember Me'|trans({}, 'AdminLTEBundle') }}</label>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block">{{ 'Sign In'|trans({}, 'AdminLTEBundle') }}</button>
+    </div>
+    {% if csrf_token %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+    {% endif %}
+    {% block login_form_end %}{% endblock %}
+</form>
+{% endblock %}

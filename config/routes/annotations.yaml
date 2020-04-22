@@ -6,3 +6,8 @@ admin:
     resource: '../../src/Controller/Admin'
     type: annotation
     prefix: /admin
+
+promoter:
+    resource: '../../src/Controller/Promoter'
+    type: annotation
+    prefix: /promotor

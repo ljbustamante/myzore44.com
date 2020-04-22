@@ -9,6 +9,14 @@
 {% form_theme form.save_edit 'Admin/actions.html.twig' %}
 {% endif %}
 
+{% if form.save_list is defined %}
+{% form_theme form.save_list 'Admin/actions.html.twig' %}
+{% endif %}
+
+{% if form.cancel is defined %}
+{% form_theme form.cancel 'Admin/actions.html.twig' %}
+{% endif %}
+
 {% block page_title %}Bienvenido{% endblock %}
 {% block page_subtitle %}Panel de control{% endblock %}
 {% block stylesheets %}
@@ -42,13 +50,18 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {% if cancel_url is defined and form.actions.cancel is defined %}
-    <script type="text/javascript">
-    $(function(){
-        $('#{{ form.actions.cancel.vars.id }}').click(function(){
-            location.href = "{{ cancel_url }}";
-        });
-    })
-    </script>
+    {% if cancel_url is defined %} 
+        {% if form.actions.cancel is defined %}
+            {% set formCancel = form.actions.cancel %}
+        {% elseif form.cancel is defined %}
+            {% set formCancel = form.cancel %}
+        {% endif %}
+        <script type="text/javascript">
+        $(function(){
+            $('#{{ formCancel.vars.id|default('') }}').click(function(){
+                location.href = "{{ cancel_url }}";
+            });
+        })
+        </script>
     {% endif %}
 {% endblock javascripts %}
