@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use App\Entity\Product;
 use App\Entity\Genre;
+use App\Entity\Provider;
 use App\Entity\ProductType as BaseType;
 use App\Form\Type\Admin\ActionsType;
 
@@ -42,6 +43,14 @@ class ProductType extends AbstractType
                        'placeholder' => 'Seleccione el género'
                       )
                 )
+            ->add('providers', EntityType::class, 
+                array('label' => 'Proveedores',
+                      'by_reference' => true, 
+                      'multiple' => true, 
+                      'expanded' => true, 
+                      'class' => Provider::class
+                     )
+               )
             ->add('active', CheckboxType::class, ['label' => 'Activo', 'required' => false])
             ->add('actions', ActionsType::class, 
                   ['mapped' => false, 

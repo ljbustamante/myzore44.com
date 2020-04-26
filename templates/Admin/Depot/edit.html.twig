@@ -1,0 +1,55 @@
+{% extends 'AdminLTE/form_detail.html.twig' %}
+{% form_theme form.shelfs 'Form\\collection_widget.html.twig' %}
+
+{% block page_title %}Edición de Almacén{% endblock %}
+{% block page_subtitle %}{{ form.vars.data.genre|default('Nuevo') }}{% endblock %}
+{% block form_content %}
+{#{ dump(form.vars.data.image) }}
+{% thumbnail form.vars.data.image, 'small' %#}
+{{ form_errors(form) }}
+{{ form_start(form) }}
+	{{ form_row(form.depot) }}
+	{{ form_row(form.shelfs) }}
+	{{ form_row(form.active) }}
+	{{ form_row(form.actions) }}
+{{ form_end(form) }}
+{#{ form(form) }#}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+jQuery(document).ready(function () {
+	setCollectionList();
+	//showChoiceOptions();
+});
+
+function setCollectionList(){
+	jQuery('.add-another-collection-widget').unbind('click');
+	jQuery('.add-another-collection-widget').click(function (e) {
+		var list = jQuery(jQuery(this).attr('data-list'));
+		console.log(list);
+		var counter = list.data('widget-counter') | list.children().length;
+		
+        if (!counter) { counter = list.children().length; }
+		console.log(counter);
+        // grab the prototype template
+		var newWidget = list.attr('data-prototype');
+
+		var prototypeName = list.attr('data-prototype-name');
+		//console.log("Prototype name: " + prototypeName);
+		var repString = new RegExp(prototypeName, "g");
+        newWidget = newWidget.replace(repString, counter);
+        counter++;
+        list.data(' widget-counter', counter);
+
+        // create a new list element and add it to the list
+        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+		newElem.appendTo(list);
+		
+		if(prototypeName == '__name__'){
+			setCollectionList();
+		}
+    });
+}
+</script>
+{% endblock javascripts %}

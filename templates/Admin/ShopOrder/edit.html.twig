@@ -1,0 +1,37 @@
+{% extends 'AdminLTE/form_detail.html.twig' %}
+{% form_theme form.shopOrderDetails 'Form\\collection_widget.html.twig' %}
+
+{% block page_title %}Edición de Orden de compra{% endblock %}
+{% block page_subtitle %}{{ form.vars.data.code|default('Nuevo') }}{% endblock %}
+{% block form_content %}
+{#{ dump(form.vars.data.image) }}
+{% thumbnail form.vars.data.image, 'small' %#}
+{{ form_errors(form) }}
+{{ form_start(form) }}
+	{{ form_row(form.code) }}
+	{{ form_row(form.date) }}
+    {{ form_row(form.deliveryDate) }}
+    {{ form_row(form.provider) }}
+    {{ form_row(form.shopOrderDetails) }}
+	{{ form_row(form.actions) }}
+{{ form_end(form) }}
+{#{ form(form) }#}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+jQuery(document).ready(function () {
+    jQuery('.add-another-collection-widget').click(function (e) {
+        var list = jQuery(jQuery(this).attr('data-list'));
+        var counter = list.data('widget-counter') | list.children().length;
+        if (!counter) { counter = list.children().length; }
+        var newWidget = list.attr('data-prototype');
+        newWidget = newWidget.replace(/__name__/g, counter);
+        counter++;
+        list.data(' widget-counter', counter);
+        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+        newElem.appendTo(list);
+    });
+});
+</script>
+{% endblock javascripts %}

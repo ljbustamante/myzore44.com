@@ -31,16 +31,16 @@ class CatalogueType extends AbstractType
             ->add('startDate', DateType::class, 
                 ['label' => 'Inicio', 
                  'widget' => 'single_text', 
-                 'format' => 'dd-MM-yyyy', 
-                 'placeholder' => 'dd-mm-yyyy', 
+                 'format' => 'dd/MM/yyyy', 
+                 'placeholder' => 'dd/mm/yyyy', 
                  'required' => false
                 ]
             )
             ->add('endDate', DateType::class, 
                 ['label' => 'Final', 
                  'widget' => 'single_text', 
-                 'format' => 'dd-MM-yyyy', 
-                 'placeholder' => 'dd-mm-yyyy', 
+                 'format' => 'dd/MM/yyyy', 
+                 'placeholder' => 'dd/mm/yyyy', 
                  'required' => false
                 ]
             )

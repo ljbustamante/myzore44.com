@@ -1,0 +1,23 @@
+{% extends 'AdminLTE/form_detail.html.twig' %}
+
+{% block page_title %}Edición de Proveedor{% endblock %}
+{% block page_subtitle %}{{ form.vars.data.provider|default('Nuevo') }}{% endblock %}
+{% block form_content %}
+{#{ dump(form.vars.data.image) }}
+{% thumbnail form.vars.data.image, 'small' %#}
+{{ form_errors(form) }}
+{{ form_start(form) }}
+	{{ form_row(form.provider) }}
+	{{ form_row(form.ruc) }}
+    {{ form_row(form.comercialName) }}
+    {{ form_row(form.socialReason) }}
+    {{ form_row(form.telephone) }}
+    {{ form_row(form.email) }}
+	{{ form_row(form.active) }}
+	{{ form_row(form.actions) }}
+{{ form_end(form) }}
+{#{ form(form) }#}
+{% endblock %}
+
+
+

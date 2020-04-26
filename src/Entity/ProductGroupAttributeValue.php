@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="product_group_attribute_value") 
- * @ORM\Entity(repositoryClass="App\Repository\ProductAttributeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProductGroupAttributeValueRepository")
  */
 class ProductGroupAttributeValue
 {
@@ -53,7 +53,6 @@ class ProductGroupAttributeValue
 
     public function __toString()
     {
-
         return array_reduce($this->productAttributeValues->toArray(), function($c, $a){ return $c . ' - ' . $a->getProductAttributeValue(); }, '');
     }
 

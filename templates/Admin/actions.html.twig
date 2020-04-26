@@ -18,7 +18,7 @@
     {% elseif form.vars.name == 'save_list' %}
     {% set icon_class = 'list-ul' %}
     {% elseif form.vars.name == 'cancel' %}
-    {% set icon_class = 'times' %}
+    {% set icon_class = 'reply' %}
     {% endif %}
     <button type="{{ type|default('button') }}" {{ block('button_attributes') }}><i class="fa fa-{{ icon_class }} mr5"></i> {{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</button>
 {%- endblock button_widget -%}

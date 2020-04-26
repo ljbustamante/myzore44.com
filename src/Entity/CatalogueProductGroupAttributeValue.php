@@ -49,9 +49,14 @@ class CatalogueProductGroupAttributeValue
      */
     private $allowedStock;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ShopOrderDetail", mappedBy="productGroupAttributeValue", cascade={"persist"})
+     **/
+    private $shopOrderDetails;
+
     public function __construct()
     {
-        // parent::__construct();
+        $this->shopOrderDetails = new ArrayCollection();
     }
 
     public function __toString()
@@ -120,6 +125,37 @@ class CatalogueProductGroupAttributeValue
     public function setProductGroupAttributeValue(?ProductGroupAttributeValue $productGroupAttributeValue): self
     {
         $this->productGroupAttributeValue = $productGroupAttributeValue;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ShopOrderDetail[]
+     */
+    public function getShopOrderDetails(): Collection
+    {
+        return $this->shopOrderDetails;
+    }
+
+    public function addShopOrderDetail(ShopOrderDetail $shopOrderDetail): self
+    {
+        if (!$this->shopOrderDetails->contains($shopOrderDetail)) {
+            $this->shopOrderDetails[] = $shopOrderDetail;
+            $shopOrderDetail->setProductGroupAttributeValue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShopOrderDetail(ShopOrderDetail $shopOrderDetail): self
+    {
+        if ($this->shopOrderDetails->contains($shopOrderDetail)) {
+            $this->shopOrderDetails->removeElement($shopOrderDetail);
+            // set the owning side to null (unless already changed)
+            if ($shopOrderDetail->getProductGroupAttributeValue() === $this) {
+                $shopOrderDetail->setProductGroupAttributeValue(null);
+            }
+        }
 
         return $this;
     }

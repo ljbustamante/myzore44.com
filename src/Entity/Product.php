@@ -66,11 +66,17 @@ class Product
      **/
     private $catalogueProducts;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Provider", mappedBy="products")
+     **/
+    private $providers;
+
     public function __construct()
     {
         // parent::__construct();
-        $this->productGroupAttributesValue = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->productGroupAttributesValue = new ArrayCollection();
         $this->catalogueProducts = new ArrayCollection();
+        $this->providers = new ArrayCollection();
     }
 
     public function __toString()
@@ -200,6 +206,34 @@ class Product
             if ($catalogueProduct->getProduct() === $this) {
                 $catalogueProduct->setProduct(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Provider[]
+     */
+    public function getProviders(): Collection
+    {
+        return $this->providers;
+    }
+
+    public function addProvider(Provider $provider): self
+    {
+        if (!$this->providers->contains($provider)) {
+            $this->providers[] = $provider;
+            $provider->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProvider(Provider $provider): self
+    {
+        if ($this->providers->contains($provider)) {
+            $this->providers->removeElement($provider);
+            $provider->removeProduct($this);
         }
 
         return $this;
